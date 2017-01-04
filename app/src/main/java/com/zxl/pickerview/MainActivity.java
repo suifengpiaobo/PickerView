@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.zxl.pickerview.OptionsPickerView;
 import com.zxl.pickerview.TimePickerView;
+import com.zxl.pickerview.demo.R;
 import com.zxl.pickerview.model.PickerViewPojo;
 
 import java.text.SimpleDateFormat;
@@ -60,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showOtherPickerView(){
-        ArrayList<PickerViewPojo> list = new ArrayList<>();
+        final ArrayList<PickerViewPojo> list = new ArrayList<>();
+        ArrayList<ArrayList<PickerViewPojo>> list1 = new ArrayList<>();
         PickerViewPojo pojo;
         pojo = new PickerViewPojo();
         pojo.setPickerViewText("男");
@@ -71,13 +73,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pojo.setPickerViewText("女");
         pojo.setId(2);
         list.add(pojo);
+        list1.add(list);
+        mOptionsPickerView.setPicker(list,list1,false);
 
         mOptionsPickerView.setOnOptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int option1, int option2, int option3) {
-
+                String sex = list.get(option1).getPickerViewText();
+                Toast.makeText(MainActivity.this, sex, Toast.LENGTH_SHORT).show();
             }
         });
-
+        mOptionsPickerView.show();
     }
 }

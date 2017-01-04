@@ -25,6 +25,8 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     private TextView mTxtTitle;
     private View mHeadView;
 
+    private ArrayList<T> optionsItems;
+
     public OptionsPickerView(Context context) {
         super(context);
         mContext = context;
