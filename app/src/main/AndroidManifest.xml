@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.zxl.pickerview">
+          package="com.zxl.pickerview.demo">
 
     <application
         android:allowBackup="true"
