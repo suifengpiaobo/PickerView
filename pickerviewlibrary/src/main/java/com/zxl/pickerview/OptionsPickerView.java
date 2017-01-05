@@ -25,7 +25,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     private TextView mTxtTitle;
     private View mHeadView;
 
-    private ArrayList<T> optionsItems;
+    private ArrayList<T> items1,items2,items3;
 
     public OptionsPickerView(Context context) {
         super(context);
@@ -47,23 +47,29 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     /**
      * 设置一级数据
      */
-    public void setPicker(ArrayList<T> optionsItems) {
-        mWheelOptions.setPicker(optionsItems, null, null, false);
+    public void setPicker(ArrayList<T> options) {
+        items1 = options;
+        mWheelOptions.setPicker(items1, null, null, false);
     }
 
     /**
      * 设置二级数据
      */
-    public void setPicker(ArrayList<T> options1Items, ArrayList<ArrayList<T>> options2Items, boolean linkage) {
-        mWheelOptions.setPicker(options1Items, options2Items, null, linkage);
+    public void setPicker(ArrayList<T> options1, ArrayList<T> options2, boolean linkage) {
+        items1 = options1;
+        items2 = options2;
+        mWheelOptions.setPicker(items1, items2, null, linkage);
     }
 
     /**
      * 设置三级数据
      */
-    public void setPicker(ArrayList<T> options1Items, ArrayList<ArrayList<T>> options2Items
-            , ArrayList<ArrayList<ArrayList<T>>> options3Items, boolean linkage) {
-        mWheelOptions.setPicker(options1Items, options2Items, options3Items, linkage);
+    public void setPicker(ArrayList<T> options1, ArrayList<T> options2
+            , ArrayList<T> options3, boolean linkage) {
+        items1 = options1;
+        items2 = options2;
+        items3 = options3;
+        mWheelOptions.setPicker(items1, items2, items3, linkage);
     }
 
     /**

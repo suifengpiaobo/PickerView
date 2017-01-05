@@ -18,9 +18,7 @@ public class WheelOptions<T> {
     private WheelView wv_option1;
     private WheelView wv_option2;
     private WheelView wv_option3;
-    private ArrayList<T> mOptions1Items;
-    private ArrayList<ArrayList<T>> mOptions2Items;
-    private ArrayList<ArrayList<ArrayList<T>>> mOptions3Items;
+    private ArrayList<T> items1,items2,items3;
 
     private float textSize = 22;
     private boolean linkage = false;
@@ -41,47 +39,48 @@ public class WheelOptions<T> {
         setView(view);
     }
 
-    public void setPicker(ArrayList<T> optionsItems) {
-        setPicker(optionsItems, null, null, false);
+    public void setPicker(ArrayList<T> options1) {
+        items1 = options1;
+        setPicker(items1, null, null, false);
     }
 
-    public void setPicker(ArrayList<T> options1Items,
-                          ArrayList<ArrayList<T>> options2Items, boolean linkage) {
-        setPicker(options1Items, options2Items, null, linkage);
+    public void setPicker(ArrayList<T> options1,
+                          ArrayList<T> options2, boolean linkage) {
+        items1 = options1;
+        items2 = options2;
+        setPicker(items1, items2, null, linkage);
     }
 
-    public void setPicker(ArrayList<T> options1Items,
-                          ArrayList<ArrayList<T>> options2Items,
-                          ArrayList<ArrayList<ArrayList<T>>> options3Items,
+    public void setPicker(ArrayList<T> options1, ArrayList<T> options2
+            , ArrayList<T> options3,
                           boolean linkage) {
         this.linkage = linkage;
-        this.mOptions1Items = options1Items;
-        this.mOptions2Items = options2Items;
-        this.mOptions3Items = options3Items;
+        items1 = options1;
+        items2 = options2;
+        items3 = options3;
         int len = ArrayWheelAdapter.DEFAULT_LENGTH;
-        if (this.mOptions3Items == null)
+        if (this.items3 == null)
             len = 8;
-        if (this.mOptions2Items == null)
+        if (this.items2 == null)
             len = 12;
         // 选项1
         wv_option1 = (WheelView) view.findViewById(R.id.options1);
-        wv_option1.setAdapter(new ArrayWheelAdapter(mOptions1Items, len));// 设置显示数据
+        wv_option1.setAdapter(new ArrayWheelAdapter(items1, len));// 设置显示数据
         wv_option1.setCurrentItem(0);// 初始化时显示的数据
         // 选项2
         wv_option2 = (WheelView) view.findViewById(R.id.options2);
-        if (mOptions2Items != null)
-            wv_option2.setAdapter(new ArrayWheelAdapter(mOptions2Items.get(0)));// 设置显示数据
+        if (items2 != null)
+            wv_option2.setAdapter(new ArrayWheelAdapter(items2));// 设置显示数据
         wv_option2.setCurrentItem(wv_option1.getCurrentItem());// 初始化时显示的数据
         // 选项3
         wv_option3 = (WheelView) view.findViewById(R.id.options3);
-        if (mOptions3Items != null)
-            wv_option3.setAdapter(new ArrayWheelAdapter(mOptions3Items.get(0)
-                    .get(0)));// 设置显示数据
+        if (items3 != null)
+            wv_option3.setAdapter(new ArrayWheelAdapter(items3));// 设置显示数据
         wv_option3.setCurrentItem(wv_option3.getCurrentItem());// 初始化时显示的数据
         setTextSize();
-        if (this.mOptions2Items == null)
+        if (this.items2 == null)
             wv_option2.setVisibility(View.GONE);
-        if (this.mOptions3Items == null)
+        if (this.items3 == null)
             wv_option3.setVisibility(View.GONE);
 
         // 联动监听器
@@ -90,16 +89,15 @@ public class WheelOptions<T> {
             @Override
             public void onItemSelected(int index) {
                 int opt2Select = 0;
-                if (mOptions2Items != null) {
+                if (items2 != null) {
                     opt2Select = wv_option2.getCurrentItem();//上一个opt2的选中位置
                     //新opt2的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
-                    opt2Select = opt2Select >= mOptions2Items.get(index).size() - 1 ? mOptions2Items.get(index).size() - 1 : opt2Select;
+                    opt2Select = opt2Select >= items2.size() - 1 ? items2.size() - 1 : opt2Select;
 
-                    wv_option2.setAdapter(new ArrayWheelAdapter(mOptions2Items
-                            .get(index)));
+                    wv_option2.setAdapter(new ArrayWheelAdapter(items2));
                     wv_option2.setCurrentItem(opt2Select);
                 }
-                if (mOptions3Items != null) {
+                if (items3 != null) {
                     wheelListener_option2.onItemSelected(opt2Select);
                 }
             }
@@ -108,17 +106,15 @@ public class WheelOptions<T> {
 
             @Override
             public void onItemSelected(int index) {
-                if (mOptions3Items != null) {
+                if (items3 != null) {
                     int opt1Select = wv_option1.getCurrentItem();
-                    opt1Select = opt1Select >= mOptions3Items.size() - 1 ? mOptions3Items.size() - 1 : opt1Select;
-                    index = index >= mOptions2Items.get(opt1Select).size() - 1 ?  mOptions2Items.get(opt1Select).size() - 1 : index;
+                    opt1Select = opt1Select >= items3.size() - 1 ? items3.size() - 1 : opt1Select;
+                    index = index >= items2.size() - 1 ?  items2.size() - 1 : index;
                     int opt3 = wv_option3.getCurrentItem();//上一个opt3的选中位置
                     //新opt3的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
-                    opt3 = opt3 >= mOptions3Items.get(opt1Select).get(index).size() - 1 ? mOptions3Items.get(opt1Select).get(index).size() - 1 : opt3;
+                    opt3 = opt3 >= items3.size() - 1 ? items3.size() - 1 : opt3;
 
-                    wv_option3.setAdapter(new ArrayWheelAdapter(mOptions3Items
-                            .get(wv_option1.getCurrentItem()).get(
-                                    index)));
+                    wv_option3.setAdapter(new ArrayWheelAdapter(items3));
                     wv_option3.setCurrentItem(opt3);
 
                 }
@@ -126,9 +122,9 @@ public class WheelOptions<T> {
         };
 
 //		// 添加联动监听
-        if (options2Items != null && linkage)
+        if (items2 != null && linkage)
             wv_option1.setOnItemSelectedListener(wheelListener_option1);
-        if (options3Items != null && linkage)
+        if (items3 != null && linkage)
             wv_option2.setOnItemSelectedListener(wheelListener_option2);
     }
 
@@ -204,15 +200,12 @@ public class WheelOptions<T> {
     }
 
     private void itemSelected(int opt1Select, int opt2Select, int opt3Select) {
-        if (mOptions2Items != null) {
-            wv_option2.setAdapter(new ArrayWheelAdapter(mOptions2Items
-                    .get(opt1Select)));
+        if (items2 != null) {
+            wv_option2.setAdapter(new ArrayWheelAdapter(items2));
             wv_option2.setCurrentItem(opt2Select);
         }
-        if (mOptions3Items != null) {
-            wv_option3.setAdapter(new ArrayWheelAdapter(mOptions3Items
-                    .get(opt1Select).get(
-                            opt2Select)));
+        if (items3 != null) {
+            wv_option3.setAdapter(new ArrayWheelAdapter(items3));
             wv_option3.setCurrentItem(opt3Select);
         }
     }

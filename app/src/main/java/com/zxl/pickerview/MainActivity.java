@@ -62,18 +62,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showOtherPickerView(){
         final ArrayList<PickerViewPojo> list = new ArrayList<>();
-        ArrayList<ArrayList<PickerViewPojo>> list1 = new ArrayList<>();
+        ArrayList<PickerViewPojo> list1 = new ArrayList<>();
         PickerViewPojo pojo;
         pojo = new PickerViewPojo();
         pojo.setPickerViewText("男");
         pojo.setId(1);
         list.add(pojo);
+        list1.add(pojo);
 
         pojo = new PickerViewPojo();
         pojo.setPickerViewText("女");
         pojo.setId(2);
         list.add(pojo);
-        list1.add(list);
+        list1.add(pojo);
         mOptionsPickerView.setPicker(list,list1,false);
 
         mOptionsPickerView.setOnOptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
