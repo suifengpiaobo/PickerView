@@ -6,7 +6,7 @@ import com.zxl.pickerview.R;
 import com.zxl.pickerview.adapter.ArrayWheelAdapter;
 import com.zxl.pickerview.listener.OnItemSelectedListener;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description
@@ -18,12 +18,14 @@ public class WheelOptions<T> {
     private WheelView wheelView1;
     private WheelView wheelView2;
     private WheelView wheelView3;
-    private ArrayList<T> items1,items2,items3;
+    private List<T> items1;
+    private List<List<T>> items2;
+    private List<List<List<T>>> items3;
 
     private float textSize = 22;
     private boolean linkage = false;
-    private OnItemSelectedListener wheelListener_option1;
-    private OnItemSelectedListener wheelListener_option2;
+    private OnItemSelectedListener wheeloption1Listener;
+    private OnItemSelectedListener wheeloption2Listener;
 
     public View getView() {
         return view;
@@ -39,20 +41,20 @@ public class WheelOptions<T> {
         setView(view);
     }
 
-    public void setPicker(ArrayList<T> options1) {
+    public void setPicker(List<T> options1) {
         items1 = options1;
         setPicker(items1, null, null, false);
     }
 
-    public void setPicker(ArrayList<T> options1,
-                          ArrayList<T> options2, boolean linkage) {
+    public void setPicker(List<T> options1,
+                          List<List<T>> options2, boolean linkage) {
         items1 = options1;
         items2 = options2;
         setPicker(items1, items2, null, linkage);
     }
 
-    public void setPicker(ArrayList<T> options1, ArrayList<T> options2
-            , ArrayList<T> options3,
+    public void setPicker(List<T> options1, List<List<T>> options2
+            , List<List<List<T>>> options3,
                           boolean linkage) {
         this.linkage = linkage;
         items1 = options1;
@@ -67,19 +69,19 @@ public class WheelOptions<T> {
         wheelView1 = (WheelView) view.findViewById(R.id.options1);
         wheelView1.setAdapter(new ArrayWheelAdapter(items1, len));// 设置显示数据
         wheelView1.setCurrentItem(0);// 初始化时显示的数据
-        wheelView1.setCurrentObj(items1.get(0));
+//        wheelView1.setCurrentObj(items1.get(0));
         // 选项2
         wheelView2 = (WheelView) view.findViewById(R.id.options2);
         if (items2 != null)
-            wheelView2.setAdapter(new ArrayWheelAdapter(items2));// 设置显示数据
+            wheelView2.setAdapter(new ArrayWheelAdapter(items2.get(0)));// 设置显示数据
         wheelView2.setCurrentItem(wheelView1.getCurrentItem());// 初始化时显示的数据
-        wheelView2.setCurrentObj(items2.get(wheelView2.getCurrentItem()));
+//        wheelView2.setCurrentObj(items2.get(wheelView2.getCurrentItem()));
         // 选项3
         wheelView3 = (WheelView) view.findViewById(R.id.options3);
         if (items3 != null)
-            wheelView3.setAdapter(new ArrayWheelAdapter(items3));// 设置显示数据
+            wheelView3.setAdapter(new ArrayWheelAdapter(items3.get(0).get(0)));// 设置显示数据
         wheelView3.setCurrentItem(wheelView3.getCurrentItem());// 初始化时显示的数据
-        wheelView3.setCurrentObj(items3.get(wheelView3.getCurrentItem()));
+//        wheelView3.setCurrentObj(items3.get(wheelView3.getCurrentItem()));
         setTextSize();
         if (this.items2 == null)
             wheelView2.setVisibility(View.GONE);
@@ -87,7 +89,7 @@ public class WheelOptions<T> {
             wheelView3.setVisibility(View.GONE);
 
         // 联动监听器
-        wheelListener_option1 = new OnItemSelectedListener() {
+        wheeloption1Listener = new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(int index) {
@@ -95,41 +97,43 @@ public class WheelOptions<T> {
                 if (items2 != null) {
                     opt2Select = wheelView2.getCurrentItem();//上一个opt2的选中位置
                     //新opt2的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
-                    opt2Select = opt2Select >= items2.size() - 1 ? items2.size() - 1 : opt2Select;
+                    opt2Select = opt2Select >= items2.get(index).size() - 1 ? items2.get(index).size() - 1 : opt2Select;
 
-                    wheelView2.setAdapter(new ArrayWheelAdapter(items2));
-                    wheelView2.setCurrentItem(opt2Select);
-                    wheelView2.setCurrentObj(items2.get(opt2Select));
+                    wheelView2.setAdapter(new ArrayWheelAdapter(items2.get(index)));
+//                    wheelView2.setCurrentItem(opt2Select);
+                    wheelView2.setCurrentItem(0);
+//                    wheelView2.setCurrentObj(items2.get(opt2Select));
                 }
                 if (items3 != null) {
-                    wheelListener_option2.onItemSelected(opt2Select);
+                    wheeloption2Listener.onItemSelected(opt2Select);
                 }
             }
         };
-        wheelListener_option2 = new OnItemSelectedListener() {
+        wheeloption2Listener = new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(int index) {
                 if (items3 != null) {
                     int opt1Select = wheelView1.getCurrentItem();
                     opt1Select = opt1Select >= items3.size() - 1 ? items3.size() - 1 : opt1Select;
-                    index = index >= items2.size() - 1 ?  items2.size() - 1 : index;
+                    index = index >= items2.get(opt1Select).size() - 1 ?  items2.get(opt1Select).size() - 1 : index;
                     int opt3 = wheelView3.getCurrentItem();//上一个opt3的选中位置
                     //新opt3的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
-                    opt3 = opt3 >= items3.size() - 1 ? items3.size() - 1 : opt3;
+                    opt3 = opt3 >= items3.get(opt1Select).size() - 1 ? items3.get(opt1Select).get(index).size() - 1 : opt3;
 
-                    wheelView3.setAdapter(new ArrayWheelAdapter(items3));
-                    wheelView3.setCurrentItem(opt3);
-                    wheelView3.setCurrentObj(items3.get(opt3));
+                    wheelView3.setAdapter(new ArrayWheelAdapter(items3.get(wheelView1.getCurrentItem()).get(index)));
+//                    wheelView3.setCurrentItem(opt3);
+                    wheelView3.setCurrentItem(0);
+//                    wheelView3.setCurrentObj(items3.get(opt3));
                 }
             }
         };
 
 //		// 添加联动监听
         if (items2 != null && linkage)
-            wheelView1.setOnItemSelectedListener(wheelListener_option1);
+            wheelView1.setOnItemSelectedListener(wheeloption1Listener);
         if (items3 != null && linkage)
-            wheelView2.setOnItemSelectedListener(wheelListener_option2);
+            wheelView2.setOnItemSelectedListener(wheeloption2Listener);
     }
 
     /**
@@ -205,11 +209,11 @@ public class WheelOptions<T> {
 
     private void itemSelected(int opt1Select, int opt2Select, int opt3Select) {
         if (items2 != null) {
-            wheelView2.setAdapter(new ArrayWheelAdapter(items2));
+            wheelView2.setAdapter(new ArrayWheelAdapter(items2.get(opt1Select)));
             wheelView2.setCurrentItem(opt2Select);
         }
         if (items3 != null) {
-            wheelView3.setAdapter(new ArrayWheelAdapter(items3));
+            wheelView3.setAdapter(new ArrayWheelAdapter(items3.get(opt1Select).get(opt2Select)));
             wheelView3.setCurrentItem(opt3Select);
         }
     }

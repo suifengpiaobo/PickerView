@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.zxl.pickerview.widget.BasePickerView;
 import com.zxl.pickerview.widget.wheelview.WheelOptions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description 其它选择
@@ -25,7 +25,9 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     private TextView mTxtTitle;
     private View mHeadView;
 
-    private ArrayList<T> items1,items2,items3;
+    private List<T> items1;
+    private List<List<T>> items2;
+    private List<List<List<T>>> items3;
 
     public OptionsPickerView(Context context) {
         super(context);
@@ -47,7 +49,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     /**
      * 设置一级数据
      */
-    public void setPicker(ArrayList<T> options) {
+    public void setPicker(List<T> options) {
         items1 = options;
         mWheelOptions.setPicker(items1, null, null, false);
     }
@@ -55,7 +57,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     /**
      * 设置二级数据
      */
-    public void setPicker(ArrayList<T> options1, ArrayList<T> options2, boolean linkage) {
+    public void setPicker(List<T> options1, List<List<T>> options2, boolean linkage) {
         items1 = options1;
         items2 = options2;
         mWheelOptions.setPicker(items1, items2, null, linkage);
@@ -64,8 +66,8 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     /**
      * 设置三级数据
      */
-    public void setPicker(ArrayList<T> options1, ArrayList<T> options2
-            , ArrayList<T> options3, boolean linkage) {
+    public void setPicker(List<T> options1, List<List<T>> options2
+            , List<List<List<T>>> options3, boolean linkage) {
         items1 = options1;
         items2 = options2;
         items3 = options3;
@@ -195,13 +197,13 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     @Override
     public void onClick(View v){
         int id = v.getId();
-        if(id == R.id.btnSubmit){
+        if(id == R.id.submit){
             if(mOptionsSelectListener != null){
                 int[] optionsCurrentItems = mWheelOptions.getCurrentItems();
                 mOptionsSelectListener.onOptionsSelect(optionsCurrentItems[0], optionsCurrentItems[1], optionsCurrentItems[2]);
             }
             dismiss();
-        }else if(id == R.id.btnCancel){
+        }else if(id == R.id.cancel){
             dismiss();
         }
     }
