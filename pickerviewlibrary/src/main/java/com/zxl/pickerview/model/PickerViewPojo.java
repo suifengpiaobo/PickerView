@@ -7,15 +7,6 @@ package com.zxl.pickerview.model;
  */
 public class PickerViewPojo {
     String pickerViewText;//显示的文字
-    int id; //当前id
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setPickerViewText(String pickerViewText) {
         this.pickerViewText = pickerViewText;

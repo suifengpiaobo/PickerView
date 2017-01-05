@@ -5,11 +5,11 @@ import android.view.Gravity;
 import com.zxl.pickerview.R;
 
 /**
- * Description
+ * Description 动画工具类
  * Created by zxl on 2017/1/4 下午6:23.
  * Email:444288256@qq.com
  */
-public class PickerViewAnimateUtil {
+public class AnimateUtil {
     private static final int INVALID = -1;
 
     public static int getAnimationResource(int gravity, boolean isInAnimation) {

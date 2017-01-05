@@ -21,7 +21,7 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
 
     private OnOptionsSelectListener mOptionsSelectListener;
     private WheelOptions<T> mWheelOptions;
-    private Button mBtnSubmit, mBtnCancel;
+    private Button mSubmit, mCancel;
     private TextView mTxtTitle;
     private View mHeadView;
 
@@ -37,11 +37,11 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
         LayoutInflater.from(mContext).inflate(R.layout.pickerview_options, contentContainer);
         mWheelOptions = new WheelOptions<>(findViewById(R.id.optionspicker));
         mHeadView = findViewById(R.id.rlt_head_view);
-        mTxtTitle = (TextView) findViewById(R.id.tvTitle);
-        mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
-        mBtnCancel = (Button) findViewById(R.id.btnCancel);
-        mBtnSubmit.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
+        mTxtTitle = (TextView) findViewById(R.id.title);
+        mSubmit = (Button) findViewById(R.id.submit);
+        mCancel = (Button) findViewById(R.id.cancel);
+        mSubmit.setOnClickListener(this);
+        mCancel.setOnClickListener(this);
     }
 
     /**
@@ -147,42 +147,42 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
      * 设置取消文字
      */
     public void setCancelText(String text){
-        mBtnCancel.setText(text);
+        mCancel.setText(text);
     }
 
     /**
      * 设置取消文字颜色
      */
     public void setCancelTextColor(int resId){
-        mBtnCancel.setTextColor(resId);
+        mCancel.setTextColor(resId);
     }
 
     /**
      * 设置取消文字大小
      */
     public void setCancelTextSize(float size){
-        mBtnCancel.setTextSize(size);
+        mCancel.setTextSize(size);
     }
 
     /**
      * 设置确认文字
      */
     public void setSubmitText(String text){
-        mBtnSubmit.setText(text);
+        mSubmit.setText(text);
     }
 
     /**
      * 设置确认文字颜色
      */
     public void setSubmitTextColor(int resId){
-        mBtnSubmit.setTextColor(resId);
+        mSubmit.setTextColor(resId);
     }
 
     /**
      * 设置确认文字大小
      */
     public void setSubmitTextSize(float size){
-        mBtnSubmit.setTextSize(size);
+        mSubmit.setTextSize(size);
     }
 
     /**

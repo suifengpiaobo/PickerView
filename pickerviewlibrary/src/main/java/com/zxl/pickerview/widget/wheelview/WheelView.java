@@ -78,6 +78,9 @@ public class WheelView extends View{
     int initPosition;
     //选中的Item是第几个
     private int selectedItem;
+
+    private Object currentObj;
+
     int preCurrentIndex;
     //滚动偏移值,用于记录滚动了多少个item
     int change;
@@ -266,6 +269,16 @@ public class WheelView extends View{
     public final void setCurrentItem(int currentItem) {
         this.initPosition = currentItem;
         totalScrollY = 0;//回归顶部，不然重设setCurrentItem的话位置会偏移的，就会显示出不对位置的数据
+        invalidate();
+    }
+
+    public Object getCurrentObj() {
+        return currentObj;
+    }
+
+    public void setCurrentObj(Object currentObj) {
+        this.currentObj = currentObj;
+        totalScrollY = 0;
         invalidate();
     }
 

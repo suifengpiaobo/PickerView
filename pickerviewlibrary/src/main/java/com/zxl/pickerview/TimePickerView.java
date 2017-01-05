@@ -26,9 +26,9 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     private Context mContext;
 
     private View mHeadView;
-    private TextView mTxtTitle;
+    private TextView mTitle;
     private WheelTime mWheelTime;
-    private Button mBtnSubmit, mBtnCancel;
+    private Button mSubmit, mCancel;
     private OnTimeSelectListener mTimeSelectListener;
 
     public TimePickerView(Context context, Type type) {
@@ -44,11 +44,11 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     private void initView() {
         LayoutInflater.from(mContext).inflate(R.layout.pickerview_time, contentContainer);
         mHeadView = findViewById(R.id.rlt_head_view);
-        mTxtTitle = (TextView) findViewById(R.id.tvTitle);
-        mBtnSubmit = (Button) findViewById(R.id.btnSubmit);
-        mBtnCancel = (Button) findViewById(R.id.btnCancel);
-        mBtnSubmit.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
+        mTitle = (TextView) findViewById(R.id.title);
+        mSubmit = (Button) findViewById(R.id.submit);
+        mCancel = (Button) findViewById(R.id.cancel);
+        mSubmit.setOnClickListener(this);
+        mCancel.setOnClickListener(this);
     }
 
     /**
@@ -117,63 +117,63 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
      * 设置标题
      */
     public void setTitle(String title){
-        mTxtTitle.setText(title);
+        mTitle.setText(title);
     }
 
     /**
      * 设置标题颜色
      */
     public void setTitleColor(int resId){
-        mTxtTitle.setTextColor(resId);
+        mTitle.setTextColor(resId);
     }
 
     /**
      * 设置标题大小
      */
     public void setTitleSize(float size){
-        mTxtTitle.setTextSize(size);
+        mTitle.setTextSize(size);
     }
 
     /**
      * 设置取消文字
      */
     public void setCancelText(String text){
-        mBtnCancel.setText(text);
+        mCancel.setText(text);
     }
 
     /**
      * 设置取消文字颜色
      */
     public void setCancelTextColor(int resId){
-        mBtnCancel.setTextColor(resId);
+        mCancel.setTextColor(resId);
     }
 
     /**
      * 设置取消文字大小
      */
     public void setCancelTextSize(float size){
-        mBtnCancel.setTextSize(size);
+        mCancel.setTextSize(size);
     }
 
     /**
      * 设置确认文字
      */
     public void setSubmitText(String text){
-        mBtnSubmit.setText(text);
+        mSubmit.setText(text);
     }
 
     /**
      * 设置确认文字颜色
      */
     public void setSubmitTextColor(int resId){
-        mBtnSubmit.setTextColor(resId);
+        mSubmit.setTextColor(resId);
     }
 
     /**
      * 设置确认文字大小
      */
     public void setSubmitTextSize(float size){
-        mBtnSubmit.setTextSize(size);
+        mSubmit.setTextSize(size);
     }
 
     /**
@@ -186,7 +186,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.btnSubmit){
+        if(id == R.id.submit){
             if(mTimeSelectListener != null){
                 try {
                     Date date = WheelTime.dateFormat.parse(mWheelTime.getTime());
@@ -196,7 +196,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
                 }
             }
             dismiss();
-        }else if(id == R.id.btnCancel){
+        }else if(id == R.id.cancel){
             dismiss();
         }
     }

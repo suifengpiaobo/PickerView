@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 
 import com.zxl.pickerview.R;
 import com.zxl.pickerview.listener.OnDismissListener;
-import com.zxl.pickerview.utils.PickerViewAnimateUtil;
+import com.zxl.pickerview.utils.AnimateUtil;
 
 /**
  * Description 仿IOSPickerView控件
@@ -135,12 +135,12 @@ public class BasePickerView {
 
     }
     public Animation getInAnimation() {
-        int res = PickerViewAnimateUtil.getAnimationResource(this.gravity, true);
+        int res = AnimateUtil.getAnimationResource(this.gravity, true);
         return AnimationUtils.loadAnimation(context, res);
     }
 
     public Animation getOutAnimation() {
-        int res = PickerViewAnimateUtil.getAnimationResource(this.gravity, false);
+        int res = AnimateUtil.getAnimationResource(this.gravity, false);
         return AnimationUtils.loadAnimation(context, res);
     }
 

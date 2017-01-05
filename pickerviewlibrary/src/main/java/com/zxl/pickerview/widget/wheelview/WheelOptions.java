@@ -15,9 +15,9 @@ import java.util.ArrayList;
  */
 public class WheelOptions<T> {
     private View view;
-    private WheelView wv_option1;
-    private WheelView wv_option2;
-    private WheelView wv_option3;
+    private WheelView wheelView1;
+    private WheelView wheelView2;
+    private WheelView wheelView3;
     private ArrayList<T> items1,items2,items3;
 
     private float textSize = 22;
@@ -64,24 +64,27 @@ public class WheelOptions<T> {
         if (this.items2 == null)
             len = 12;
         // 选项1
-        wv_option1 = (WheelView) view.findViewById(R.id.options1);
-        wv_option1.setAdapter(new ArrayWheelAdapter(items1, len));// 设置显示数据
-        wv_option1.setCurrentItem(0);// 初始化时显示的数据
+        wheelView1 = (WheelView) view.findViewById(R.id.options1);
+        wheelView1.setAdapter(new ArrayWheelAdapter(items1, len));// 设置显示数据
+        wheelView1.setCurrentItem(0);// 初始化时显示的数据
+        wheelView1.setCurrentObj(items1.get(0));
         // 选项2
-        wv_option2 = (WheelView) view.findViewById(R.id.options2);
+        wheelView2 = (WheelView) view.findViewById(R.id.options2);
         if (items2 != null)
-            wv_option2.setAdapter(new ArrayWheelAdapter(items2));// 设置显示数据
-        wv_option2.setCurrentItem(wv_option1.getCurrentItem());// 初始化时显示的数据
+            wheelView2.setAdapter(new ArrayWheelAdapter(items2));// 设置显示数据
+        wheelView2.setCurrentItem(wheelView1.getCurrentItem());// 初始化时显示的数据
+        wheelView2.setCurrentObj(items2.get(wheelView2.getCurrentItem()));
         // 选项3
-        wv_option3 = (WheelView) view.findViewById(R.id.options3);
+        wheelView3 = (WheelView) view.findViewById(R.id.options3);
         if (items3 != null)
-            wv_option3.setAdapter(new ArrayWheelAdapter(items3));// 设置显示数据
-        wv_option3.setCurrentItem(wv_option3.getCurrentItem());// 初始化时显示的数据
+            wheelView3.setAdapter(new ArrayWheelAdapter(items3));// 设置显示数据
+        wheelView3.setCurrentItem(wheelView3.getCurrentItem());// 初始化时显示的数据
+        wheelView3.setCurrentObj(items3.get(wheelView3.getCurrentItem()));
         setTextSize();
         if (this.items2 == null)
-            wv_option2.setVisibility(View.GONE);
+            wheelView2.setVisibility(View.GONE);
         if (this.items3 == null)
-            wv_option3.setVisibility(View.GONE);
+            wheelView3.setVisibility(View.GONE);
 
         // 联动监听器
         wheelListener_option1 = new OnItemSelectedListener() {
@@ -90,12 +93,13 @@ public class WheelOptions<T> {
             public void onItemSelected(int index) {
                 int opt2Select = 0;
                 if (items2 != null) {
-                    opt2Select = wv_option2.getCurrentItem();//上一个opt2的选中位置
+                    opt2Select = wheelView2.getCurrentItem();//上一个opt2的选中位置
                     //新opt2的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
                     opt2Select = opt2Select >= items2.size() - 1 ? items2.size() - 1 : opt2Select;
 
-                    wv_option2.setAdapter(new ArrayWheelAdapter(items2));
-                    wv_option2.setCurrentItem(opt2Select);
+                    wheelView2.setAdapter(new ArrayWheelAdapter(items2));
+                    wheelView2.setCurrentItem(opt2Select);
+                    wheelView2.setCurrentObj(items2.get(opt2Select));
                 }
                 if (items3 != null) {
                     wheelListener_option2.onItemSelected(opt2Select);
@@ -107,25 +111,25 @@ public class WheelOptions<T> {
             @Override
             public void onItemSelected(int index) {
                 if (items3 != null) {
-                    int opt1Select = wv_option1.getCurrentItem();
+                    int opt1Select = wheelView1.getCurrentItem();
                     opt1Select = opt1Select >= items3.size() - 1 ? items3.size() - 1 : opt1Select;
                     index = index >= items2.size() - 1 ?  items2.size() - 1 : index;
-                    int opt3 = wv_option3.getCurrentItem();//上一个opt3的选中位置
+                    int opt3 = wheelView3.getCurrentItem();//上一个opt3的选中位置
                     //新opt3的位置，判断如果旧位置没有超过数据范围，则沿用旧位置，否则选中最后一项
                     opt3 = opt3 >= items3.size() - 1 ? items3.size() - 1 : opt3;
 
-                    wv_option3.setAdapter(new ArrayWheelAdapter(items3));
-                    wv_option3.setCurrentItem(opt3);
-
+                    wheelView3.setAdapter(new ArrayWheelAdapter(items3));
+                    wheelView3.setCurrentItem(opt3);
+                    wheelView3.setCurrentObj(items3.get(opt3));
                 }
             }
         };
 
 //		// 添加联动监听
         if (items2 != null && linkage)
-            wv_option1.setOnItemSelectedListener(wheelListener_option1);
+            wheelView1.setOnItemSelectedListener(wheelListener_option1);
         if (items3 != null && linkage)
-            wv_option2.setOnItemSelectedListener(wheelListener_option2);
+            wheelView2.setOnItemSelectedListener(wheelListener_option2);
     }
 
     /**
@@ -136,11 +140,11 @@ public class WheelOptions<T> {
      */
     public void setLabels(String label1, String label2, String label3) {
         if (label1 != null)
-            wv_option1.setLabel(label1);
+            wheelView1.setLabel(label1);
         if (label2 != null)
-            wv_option2.setLabel(label2);
+            wheelView2.setLabel(label2);
         if (label3 != null)
-            wv_option3.setLabel(label3);
+            wheelView3.setLabel(label3);
     }
 
     /**
@@ -148,9 +152,9 @@ public class WheelOptions<T> {
      * @param cyclic 是否循环
      */
     public void setCyclic(boolean cyclic) {
-        wv_option1.setCyclic(cyclic);
-        wv_option2.setCyclic(cyclic);
-        wv_option3.setCyclic(cyclic);
+        wheelView1.setCyclic(cyclic);
+        wheelView2.setCyclic(cyclic);
+        wheelView3.setCyclic(cyclic);
     }
 
     /**
@@ -158,16 +162,16 @@ public class WheelOptions<T> {
      * @param cyclic1,cyclic2,cyclic3 是否循环
      */
     public void setCyclic(boolean cyclic1,boolean cyclic2,boolean cyclic3) {
-        wv_option1.setCyclic(cyclic1);
-        wv_option2.setCyclic(cyclic2);
-        wv_option3.setCyclic(cyclic3);
+        wheelView1.setCyclic(cyclic1);
+        wheelView2.setCyclic(cyclic2);
+        wheelView3.setCyclic(cyclic3);
     }
     /**
      * 设置第二级是否循环滚动
      * @param cyclic 是否循环
      */
     public void setOption2Cyclic(boolean cyclic) {
-        wv_option2.setCyclic(cyclic);
+        wheelView2.setCyclic(cyclic);
     }
 
     /**
@@ -175,7 +179,7 @@ public class WheelOptions<T> {
      * @param cyclic 是否循环
      */
     public void setOption3Cyclic(boolean cyclic) {
-        wv_option3.setCyclic(cyclic);
+        wheelView3.setCyclic(cyclic);
     }
 
     /**
@@ -184,9 +188,9 @@ public class WheelOptions<T> {
      */
     public int[] getCurrentItems() {
         int[] currentItems = new int[3];
-        currentItems[0] = wv_option1.getCurrentItem();
-        currentItems[1] = wv_option2.getCurrentItem();
-        currentItems[2] = wv_option3.getCurrentItem();
+        currentItems[0] = wheelView1.getCurrentItem();
+        currentItems[1] = wheelView2.getCurrentItem();
+        currentItems[2] = wheelView3.getCurrentItem();
         return currentItems;
     }
 
@@ -194,19 +198,19 @@ public class WheelOptions<T> {
         if(linkage){
             itemSelected(option1, option2, option3);
         }
-        wv_option1.setCurrentItem(option1);
-        wv_option2.setCurrentItem(option2);
-        wv_option3.setCurrentItem(option3);
+        wheelView1.setCurrentItem(option1);
+        wheelView2.setCurrentItem(option2);
+        wheelView3.setCurrentItem(option3);
     }
 
     private void itemSelected(int opt1Select, int opt2Select, int opt3Select) {
         if (items2 != null) {
-            wv_option2.setAdapter(new ArrayWheelAdapter(items2));
-            wv_option2.setCurrentItem(opt2Select);
+            wheelView2.setAdapter(new ArrayWheelAdapter(items2));
+            wheelView2.setCurrentItem(opt2Select);
         }
         if (items3 != null) {
-            wv_option3.setAdapter(new ArrayWheelAdapter(items3));
-            wv_option3.setCurrentItem(opt3Select);
+            wheelView3.setAdapter(new ArrayWheelAdapter(items3));
+            wheelView3.setCurrentItem(opt3Select);
         }
     }
 
@@ -219,11 +223,11 @@ public class WheelOptions<T> {
     }
 
     private void setTextSize(){
-        if(wv_option1 != null)
-            wv_option1.setTextSize(textSize);
-        if(wv_option2 != null)
-            wv_option2.setTextSize(textSize);
-        if(wv_option3 != null)
-            wv_option3.setTextSize(textSize);
+        if(wheelView1 != null)
+            wheelView1.setTextSize(textSize);
+        if(wheelView2 != null)
+            wheelView2.setTextSize(textSize);
+        if(wheelView3 != null)
+            wheelView3.setTextSize(textSize);
     }
 }
